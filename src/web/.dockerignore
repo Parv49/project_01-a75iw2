@@ -1,0 +1,96 @@
+node_modules/
+dist/
+coverage/
+tests/
+test-results/
+*.test.tsx
+*.test.ts
+jest.config.*
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and security files
+.env*
+*.pem
+*.key
+*secret*
+.npmrc
+.env.local
+.env.development
+.env.test
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Configuration files
+.dockerignore
+README.md
+.eslintrc*
+.prettierrc*
+.editorconfig
+tsconfig.json
+babel.config.*
+
+# Git directory
+.git/
+
+# Development source maps
+*.map
+
+# Cache directories
+.cache/
+.npm/
+.eslintcache
+
+# Temporary files
+tmp/
+temp/
+
+# Build performance optimization - exclude unnecessary files
+**/*.md
+**/*.txt
+**/*.log
+CHANGELOG.md
+LICENSE
+CONTRIBUTING.md
+
+# Test and documentation
+__tests__/
+__mocks__/
+docs/
+*.spec.*
+storybook-static/
+.storybook/
+
+# Development tools
+.husky/
+.github/
+.gitlab/
+.circleci/
+.travis.yml
+.jenkins*
+
+# Dependency lock files (copied separately)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Editor configurations
+.vim/
+.sublime/
+*.sublime-*
+.project
+.settings/
+
+# Misc development files
+.browserslistrc
+.nvmrc
+.tool-versions
+.node-version
