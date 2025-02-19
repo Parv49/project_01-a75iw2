@@ -1,0 +1,78 @@
+{
+  "modes": {
+    "practice": "Mode Entraînement",
+    "timed": "Mode Chronométré",
+    "challenge": "Mode Défi",
+    "practice_description": "Entraînez-vous sans limite de temps",
+    "timed_description": "Trouvez des mots dans la limite de temps",
+    "challenge_description": "Complétez les défis de mots"
+  },
+  "difficulty": {
+    "easy": "Facile",
+    "medium": "Moyen",
+    "hard": "Difficile",
+    "easy_description": "Plus de temps, plus d'indices",
+    "medium_description": "Défi équilibré",
+    "hard_description": "Temps limité, moins d'indices"
+  },
+  "status": {
+    "idle": "Prêt à Commencer",
+    "playing": "Partie en Cours",
+    "paused": "Partie en Pause",
+    "completed": "Partie Terminée"
+  },
+  "game_controls": {
+    "start": "Commencer la Partie",
+    "pause": "Mettre en Pause",
+    "resume": "Reprendre",
+    "end": "Terminer",
+    "restart": "Rejouer",
+    "use_hint": "Utiliser un Indice",
+    "submit": "Soumettre le Mot",
+    "skip": "Passer"
+  },
+  "settings": {
+    "time_limit": "Limite de Temps",
+    "word_length": "Longueur du Mot",
+    "hints": "Indices Disponibles",
+    "min_length": "Longueur Minimale",
+    "max_length": "Longueur Maximale"
+  },
+  "scoring": {
+    "current_score": "Score Actuel",
+    "time_bonus": "Bonus de Temps",
+    "word_points": "Points du Mot",
+    "total_score": "Score Total",
+    "words_found": "Mots Trouvés",
+    "high_score": "Meilleur Score"
+  },
+  "messages": {
+    "success": {
+      "word_found": "Mot valide trouvé !",
+      "level_complete": "Niveau terminé !",
+      "high_score": "Nouveau record !",
+      "hint_used": "Indice révélé"
+    },
+    "error": {
+      "invalid_word": "Mot invalide",
+      "too_short": "Mot trop court",
+      "too_long": "Mot trop long",
+      "already_found": "Mot déjà trouvé",
+      "no_hints": "Plus d'indices disponibles",
+      "time_up": "Temps écoulé !"
+    },
+    "info": {
+      "time_remaining": "Temps restant",
+      "hints_remaining": "Indices restants",
+      "game_paused": "Jeu en pause",
+      "ready_to_start": "Prêt à commencer ?",
+      "final_score": "Score Final"
+    }
+  },
+  "prompts": {
+    "enter_letters": "Entrez les lettres",
+    "confirm_end": "Voulez-vous vraiment terminer la partie ?",
+    "save_score": "Sauvegarder votre score ?",
+    "share_result": "Partager votre résultat"
+  }
+}
