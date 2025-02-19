@@ -1,0 +1,91 @@
+{
+  "app": {
+    "name": "Générateur de Mots Aléatoires",
+    "description": "Générer des mots significatifs à partir de caractères aléatoires",
+    "version": "Version {{version}}",
+    "loading": "Chargement...",
+    "copyright": "© {{year}} Générateur de Mots Aléatoires. Tous droits réservés."
+  },
+  "navigation": {
+    "home": "Accueil",
+    "game": "Jouer",
+    "profile": "Profil",
+    "dashboard": "Tableau de Bord",
+    "settings": "Paramètres",
+    "help": "Aide",
+    "logout": "Déconnexion"
+  },
+  "buttons": {
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "retry": "Réessayer",
+    "confirm": "Confirmer",
+    "close": "Fermer"
+  },
+  "errors": {
+    "general": "Une erreur est survenue. Veuillez réessayer.",
+    "network": "Erreur réseau. Veuillez vérifier votre connexion.",
+    "auth": {
+      "required": "Authentification requise",
+      "invalid": "Identifiants invalides",
+      "expired": "Session expirée. Veuillez vous reconnecter."
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "invalid": "Entrée invalide",
+      "minLength": "Doit contenir au moins {{min}} caractères",
+      "maxLength": "Ne doit pas dépasser {{max}} caractères"
+    },
+    "notFound": "Ressource non trouvée",
+    "serverError": "Erreur serveur. Veuillez réessayer plus tard."
+  },
+  "ui": {
+    "loading": {
+      "text": "Chargement...",
+      "data": "Chargement des données...",
+      "processing": "Traitement en cours..."
+    },
+    "filters": {
+      "all": "Tout",
+      "sort": "Trier par",
+      "filter": "Filtrer",
+      "search": "Rechercher"
+    },
+    "confirmation": {
+      "title": "Êtes-vous sûr ?",
+      "delete": "Êtes-vous sûr de vouloir supprimer ceci ?",
+      "cancel": "Êtes-vous sûr de vouloir annuler ?",
+      "unsaved": "Vous avez des modifications non enregistrées. Êtes-vous sûr de vouloir quitter ?"
+    },
+    "notifications": {
+      "success": "Succès !",
+      "error": "Erreur !",
+      "warning": "Attention !",
+      "info": "Information"
+    },
+    "pagination": {
+      "prev": "Précédent",
+      "next": "Suivant",
+      "page": "Page {{page}} sur {{total}}",
+      "perPage": "Éléments par page"
+    },
+    "accessibility": {
+      "skipToContent": "Aller au contenu",
+      "menuToggle": "Basculer le menu",
+      "darkMode": "Basculer le mode sombre",
+      "closeModal": "Fermer la fenêtre"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch",
+    "select": "Sélectionner la langue"
+  }
+}
