@@ -1,0 +1,309 @@
+openapi: 3.0.0
+info:
+  title: Random Word Generator API
+  version: 1.0.0
+  description: |
+    Production-ready API for generating random words from input characters with dictionary validation.
+    Supports multiple languages and includes comprehensive error handling, rate limiting, and monitoring.
+  contact:
+    name: API Support
+    email: api-support@example.com
+  x-sla:
+    availability: 99.9%
+    rate-limit-window: 3600
+    rate-limit-requests: 1000
+    performance-targets:
+      p95-latency: 2s
+      p99-latency: 5s
+
+servers:
+  - url: /api/v1
+    description: Production API
+  - url: /api/v1/staging
+    description: Staging API
+
+tags:
+  - name: Word Generation
+    description: Word generation operations with rate limiting and validation
+  - name: Health
+    description: API health and monitoring endpoints
+
+paths:
+  /words/generate:
+    post:
+      summary: Generate words from input characters
+      operationId: generateWords
+      tags:
+        - Word Generation
+      security:
+        - bearerAuth: []
+      x-rateLimit:
+        requests: 100
+        window: 1m
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordGenerationRequest'
+      responses:
+        '200':
+          description: Successfully generated words
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: Remaining requests in window
+            X-Response-Time:
+              schema:
+                type: string
+              description: API response time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordGenerationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /health:
+    get:
+      summary: Check API health status
+      operationId: checkHealth
+      tags:
+        - Health
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: API is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    WordGenerationRequest:
+      type: object
+      required:
+        - characters
+        - language
+      properties:
+        characters:
+          type: string
+          minLength: 2
+          maxLength: 15
+          pattern: '^[a-zA-Z]+$'
+          description: Input characters for word generation
+          example: "HELLO"
+        language:
+          type: string
+          enum: [en, es, fr, de]
+          description: ISO 639-1 language code
+          example: "en"
+        minLength:
+          type: integer
+          minimum: 2
+          maximum: 15
+          description: Minimum word length filter
+          example: 3
+        maxLength:
+          type: integer
+          minimum: 2
+          maximum: 15
+          description: Maximum word length filter
+          example: 5
+
+    WordGenerationResponse:
+      type: object
+      required:
+        - words
+        - metadata
+      properties:
+        words:
+          type: array
+          items:
+            $ref: '#/components/schemas/Word'
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    Word:
+      type: object
+      required:
+        - value
+        - length
+      properties:
+        value:
+          type: string
+          description: Generated word
+          example: "HELLO"
+        length:
+          type: integer
+          description: Word length
+          example: 5
+        definition:
+          type: string
+          description: Word definition (if available)
+          example: "An expression of greeting"
+
+    ResponseMetadata:
+      type: object
+      required:
+        - totalWords
+        - processingTime
+      properties:
+        totalWords:
+          type: integer
+          description: Total number of words generated
+          example: 10
+        processingTime:
+          type: number
+          format: float
+          description: Processing time in milliseconds
+          example: 156.7
+        language:
+          type: string
+          description: Language used for generation
+          example: "en"
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Current API health status
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+        details:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [up, down]
+            cache:
+              type: string
+              enum: [up, down]
+            dictionary:
+              type: string
+              enum: [up, down]
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - severity
+            properties:
+              code:
+                type: string
+                enum: [E001, E006]
+                example: "E001"
+              message:
+                type: string
+                example: "Invalid input characters provided"
+              severity:
+                type: string
+                enum: [LOW, MEDIUM, HIGH]
+                example: "LOW"
+              recoveryAction:
+                type: string
+                example: "Please provide valid alphabetic characters only"
+
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                example: "AUTH001"
+              message:
+                type: string
+                example: "Authentication required"
+
+    TooManyRequests:
+      description: Rate limit exceeded
+      headers:
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: Seconds until rate limit reset
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                example: "E004"
+              message:
+                type: string
+                example: "Rate limit exceeded"
+              retryAfter:
+                type: integer
+                description: Seconds until retry is allowed
+                example: 60
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - severity
+            properties:
+              code:
+                type: string
+                enum: [E002, E003, E005, E007]
+                example: "E002"
+              message:
+                type: string
+                example: "Dictionary service is currently unavailable"
+              severity:
+                type: string
+                enum: [MEDIUM, HIGH, CRITICAL]
+                example: "HIGH"
+              recoveryAction:
+                type: string
+                example: "System will use cached dictionary. Please try again later"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-keyRotation:
+        frequency: 90d
+        notificationPeriod: 30d
