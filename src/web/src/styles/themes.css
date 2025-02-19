@@ -1,0 +1,252 @@
+/* ==========================================================================
+   Random Word Generator - Theme System
+   Version: 1.0.0
+   Integration: tailwindcss@3.3.0
+   ========================================================================== */
+
+@import './variables.css';
+
+/* Base Theme Configuration
+   ========================================================================== */
+:root {
+  /* Theme Transitions */
+  --theme-transition-timing: 200ms ease-in-out;
+  --theme-focus-ring: 0 0 0 2px var(--theme-border-focus);
+}
+
+/* Light Theme (Default)
+   ========================================================================== */
+[data-theme='light'] {
+  --theme-bg-primary: var(--color-white);
+  --theme-bg-secondary: var(--color-gray-100);
+  --theme-bg-tertiary: var(--color-gray-50);
+  
+  --theme-text-primary: var(--color-gray-900);
+  --theme-text-secondary: var(--color-gray-600);
+  --theme-text-tertiary: var(--color-gray-500);
+  
+  --theme-border: var(--color-gray-200);
+  --theme-border-focus: var(--color-blue-500);
+  
+  --theme-primary-light: var(--color-blue-400);
+  --theme-primary-main: var(--color-blue-600);
+  --theme-primary-dark: var(--color-blue-700);
+  
+  --theme-secondary-light: var(--color-gray-300);
+  --theme-secondary-main: var(--color-gray-500);
+  --theme-secondary-dark: var(--color-gray-600);
+  
+  --theme-success-light: var(--color-green-400);
+  --theme-success-main: var(--color-green-600);
+  --theme-success-dark: var(--color-green-700);
+  
+  --theme-error-light: var(--color-red-400);
+  --theme-error-main: var(--color-red-600);
+  --theme-error-dark: var(--color-red-700);
+}
+
+/* Dark Theme
+   ========================================================================== */
+[data-theme='dark'] {
+  --theme-bg-primary: var(--color-gray-900);
+  --theme-bg-secondary: var(--color-gray-800);
+  --theme-bg-tertiary: var(--color-gray-700);
+  
+  --theme-text-primary: var(--color-white);
+  --theme-text-secondary: var(--color-gray-300);
+  --theme-text-tertiary: var(--color-gray-400);
+  
+  --theme-border: var(--color-gray-700);
+  --theme-border-focus: var(--color-blue-400);
+  
+  --theme-primary-light: var(--color-blue-300);
+  --theme-primary-main: var(--color-blue-400);
+  --theme-primary-dark: var(--color-blue-500);
+  
+  --theme-secondary-light: var(--color-gray-600);
+  --theme-secondary-main: var(--color-gray-400);
+  --theme-secondary-dark: var(--color-gray-300);
+  
+  --theme-success-light: var(--color-green-300);
+  --theme-success-main: var(--color-green-400);
+  --theme-success-dark: var(--color-green-500);
+  
+  --theme-error-light: var(--color-red-300);
+  --theme-error-main: var(--color-red-400);
+  --theme-error-dark: var(--color-red-500);
+}
+
+/* High Contrast Theme
+   ========================================================================== */
+[data-theme='high-contrast'] {
+  --theme-bg-primary: var(--color-white);
+  --theme-bg-secondary: var(--color-white);
+  --theme-bg-tertiary: var(--color-gray-100);
+  
+  --theme-text-primary: var(--color-black);
+  --theme-text-secondary: var(--color-black);
+  --theme-text-tertiary: var(--color-gray-900);
+  
+  --theme-border: var(--color-black);
+  --theme-border-focus: var(--color-blue-700);
+  
+  --theme-primary-light: var(--color-blue-700);
+  --theme-primary-main: var(--color-blue-900);
+  --theme-primary-dark: var(--color-black);
+  
+  --theme-secondary-light: var(--color-gray-700);
+  --theme-secondary-main: var(--color-gray-900);
+  --theme-secondary-dark: var(--color-black);
+  
+  --theme-success-light: var(--color-green-700);
+  --theme-success-main: var(--color-green-900);
+  --theme-success-dark: var(--color-black);
+  
+  --theme-error-light: var(--color-red-700);
+  --theme-error-main: var(--color-red-900);
+  --theme-error-dark: var(--color-black);
+}
+
+/* Theme Utility Classes
+   ========================================================================== */
+.theme-transition {
+  transition: background-color var(--theme-transition-timing),
+              color var(--theme-transition-timing),
+              border-color var(--theme-transition-timing),
+              box-shadow var(--theme-transition-timing);
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition {
+    transition: none;
+  }
+}
+
+.theme-bg-primary {
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-primary);
+}
+
+.theme-bg-tertiary {
+  background-color: var(--theme-bg-tertiary);
+  color: var(--theme-text-primary);
+}
+
+.theme-interactive {
+  cursor: pointer;
+  transition: var(--theme-transition-timing);
+}
+
+.theme-interactive:hover {
+  background-color: var(--theme-bg-secondary);
+}
+
+.theme-interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--theme-focus-ring);
+}
+
+/* WCAG 2.1 Level AAA Contrast Compliance
+   ========================================================================== */
+.theme-text-primary {
+  color: var(--theme-text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--theme-text-secondary);
+}
+
+.theme-text-tertiary {
+  color: var(--theme-text-tertiary);
+}
+
+.theme-border {
+  border-color: var(--theme-border);
+}
+
+/* Theme-specific Button States
+   ========================================================================== */
+.theme-button-primary {
+  background-color: var(--theme-primary-main);
+  color: var(--color-white);
+  transition: var(--theme-transition-timing);
+}
+
+.theme-button-primary:hover {
+  background-color: var(--theme-primary-dark);
+}
+
+.theme-button-primary:focus-visible {
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+.theme-button-secondary {
+  background-color: var(--theme-secondary-main);
+  color: var(--color-white);
+  transition: var(--theme-transition-timing);
+}
+
+.theme-button-secondary:hover {
+  background-color: var(--theme-secondary-dark);
+}
+
+.theme-button-secondary:focus-visible {
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+/* Theme-specific Form Elements
+   ========================================================================== */
+.theme-input {
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-primary);
+  transition: var(--theme-transition-timing);
+}
+
+.theme-input:focus {
+  border-color: var(--theme-border-focus);
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+.theme-input:disabled {
+  background-color: var(--theme-bg-tertiary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Theme-specific Status Colors
+   ========================================================================== */
+.theme-success {
+  color: var(--theme-success-main);
+}
+
+.theme-error {
+  color: var(--theme-error-main);
+}
+
+/* Print Styles
+   ========================================================================== */
+@media print {
+  [data-theme] {
+    --theme-bg-primary: var(--color-white);
+    --theme-text-primary: var(--color-black);
+    --theme-border: var(--color-gray-900);
+    
+    /* Ensure high contrast for printed content */
+    background-color: var(--color-white) !important;
+    color: var(--color-black) !important;
+  }
+  
+  .theme-transition {
+    transition: none !important;
+  }
+}
