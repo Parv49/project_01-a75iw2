@@ -1,0 +1,87 @@
+groups:
+  # Redis Cluster Health Monitoring
+  - name: redis_cluster_health
+    rules:
+      # Record memory usage metrics
+      - record: redis_memory_usage_bytes
+        expr: redis_memory_used_bytes{job="redis-cluster"}
+        labels:
+          service: word-generator-cache
+
+      # Alert on high memory usage (>80%)
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes{job="redis-cluster"} / redis_memory_max_bytes{job="redis-cluster"} > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis memory usage above 80%
+          description: Redis instance {{ $labels.instance }} memory usage is {{ $value | humanize }}%
+
+      # Alert on node availability
+      - alert: RedisClusterNodeDown
+        expr: redis_up{job="redis-cluster"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Redis cluster node is down
+          description: Redis node {{ $labels.instance }} has been down for more than 1 minute
+
+  # Redis Performance Monitoring
+  - name: redis_performance
+    rules:
+      # Record command latency metrics
+      - record: redis_command_latency_seconds
+        expr: rate(redis_commands_duration_seconds_sum{job="redis-cluster"}[5m]) / rate(redis_commands_duration_seconds_count{job="redis-cluster"}[5m])
+        labels:
+          service: word-generator-cache
+
+      # Alert on high command latency
+      - alert: RedisHighLatency
+        expr: redis_command_latency_seconds > 0.01
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis command latency is high
+          description: Redis instance {{ $labels.instance }} command latency is {{ $value }} seconds
+
+      # Alert on low cache hit rate
+      - alert: RedisLowHitRate
+        expr: rate(redis_keyspace_hits_total{job="redis-cluster"}[5m]) / (rate(redis_keyspace_hits_total{job="redis-cluster"}[5m]) + rate(redis_keyspace_misses_total{job="redis-cluster"}[5m])) < 0.5
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis cache hit rate is low
+          description: Redis instance {{ $labels.instance }} cache hit rate is below 50%
+
+  # Redis Connection Monitoring
+  - name: redis_connections
+    rules:
+      # Record total connections metric
+      - record: redis_connections_total
+        expr: redis_connected_clients{job="redis-cluster"}
+        labels:
+          service: word-generator-cache
+
+      # Alert on high connection count
+      - alert: RedisHighConnectionCount
+        expr: redis_connected_clients{job="redis-cluster"} > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis has too many connections
+          description: Redis instance {{ $labels.instance }} has {{ $value }} connections
+
+      # Alert on rejected connections
+      - alert: RedisRejectedConnections
+        expr: rate(redis_rejected_connections_total{job="redis-cluster"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Redis is rejecting connections
+          description: Redis instance {{ $labels.instance }} is rejecting connections
