@@ -1,0 +1,37 @@
+# This file defines code ownership and mandatory review requirements for different parts of the application
+
+# Word Generation and Validation Algorithms - Requires specialized review
+src/backend/src/core/algorithms/** @algorithm-experts @architects @security-team
+
+# Security-critical Components and Authentication Logic
+src/backend/src/security/** @security-team @architects
+
+# API Endpoints and Controllers
+src/backend/src/api/** @backend-team @api-experts @security-team
+
+# Database Schema, Migrations and Data Access Layer
+src/backend/src/database/** @database-team @architects @security-team
+
+# General Backend Service Code
+src/backend/** @backend-team @architects
+
+# React Components and UI Elements
+src/web/src/components/** @frontend-team @ui-experts
+
+# Frontend Application Code
+src/web/** @frontend-team @architects
+
+# Infrastructure and Deployment Configuration
+infrastructure/** @devops-team @architects @security-team
+
+# CI/CD Workflow Configuration
+.github/workflows/** @devops-team @security-team
+
+# Test Files Across All Services
+**/tests/** @qa-team @security-team
+
+# Technical Documentation and Specifications
+docs/** @architects @technical-writers
+
+# Default Ownership
+* @architects
