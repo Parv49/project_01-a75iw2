@@ -1,0 +1,185 @@
+/* ==========================================================================
+   Random Word Generator - Tailwind CSS Configuration
+   Version: 1.0.0
+   Dependencies:
+   - tailwindcss@3.3.0
+   - @tailwindcss/forms@0.5.0
+   - @tailwindcss/typography@0.5.0
+   ========================================================================== */
+
+@import '../styles/variables.css';
+
+/* Tailwind Base Layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Layer Customizations */
+@layer base {
+  html {
+    font-family: var(--font-primary);
+    @apply text-text-primary bg-background-primary;
+  }
+
+  /* Heading Styles */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  /* Focus States */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-main ring-offset-2;
+  }
+
+  /* Form Elements */
+  input, select, textarea {
+    @apply border-gray-300 rounded-default focus:border-primary-main focus:ring-primary-main;
+  }
+}
+
+/* Component Layer Customizations */
+@layer components {
+  /* Button Variants */
+  .btn {
+    @apply px-4 py-2 rounded-default transition-all duration-200 font-medium;
+  }
+
+  .btn-primary {
+    @apply bg-primary-main text-white hover:bg-primary-dark focus:ring-2 focus:ring-primary-light;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-main text-white hover:bg-secondary-dark focus:ring-2 focus:ring-secondary-light;
+  }
+
+  /* Card Component */
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  /* Form Groups */
+  .form-group {
+    @apply space-y-2 mb-4;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-text-primary;
+  }
+
+  .form-input {
+    @apply w-full rounded-default;
+  }
+
+  /* Word Display Components */
+  .word-card {
+    @apply p-4 border rounded-lg hover:shadow-md transition-shadow;
+  }
+
+  .word-definition {
+    @apply text-text-secondary text-sm mt-2;
+  }
+}
+
+/* Utility Layer Customizations */
+@layer utilities {
+  /* Accessibility Utilities */
+  .visually-hidden {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Custom Focus Utilities */
+  .focus-outline {
+    @apply outline-2 outline-primary-main outline-offset-2;
+  }
+
+  /* Text Gradients */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-main to-primary-dark;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar {
+    @apply scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100;
+  }
+}
+
+/* Responsive Design */
+@screen sm {
+  .container {
+    @apply px-4;
+  }
+}
+
+@screen md {
+  .container {
+    @apply px-6;
+  }
+}
+
+@screen lg {
+  .container {
+    @apply px-8;
+  }
+}
+
+@screen xl {
+  .container {
+    @apply px-12;
+  }
+}
+
+@screen 2xl {
+  .container {
+    @apply px-16;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    @apply bg-gray-900 text-white;
+  }
+
+  .card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .form-input {
+    @apply bg-gray-700 border-gray-600 text-white;
+  }
+
+  .btn-primary {
+    @apply bg-primary-dark hover:bg-primary-main;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-dark hover:bg-secondary-main;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    @apply hidden;
+  }
+
+  .print-only {
+    @apply block;
+  }
+
+  * {
+    @apply text-black bg-white;
+  }
+}
+
+/* High Contrast Mode */
+@media (forced-colors: active) {
+  .btn {
+    @apply border-2;
+  }
+
+  .card {
+    @apply border-2;
+  }
+}
