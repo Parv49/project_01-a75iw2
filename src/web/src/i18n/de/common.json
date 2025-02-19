@@ -1,0 +1,68 @@
+{
+  "app": {
+    "name": "Zufallswortgenerator",
+    "description": "Generiere sinnvolle Wörter aus zufälligen Buchstaben",
+    "version": "1.0.0"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "game": "Spiel spielen",
+    "profile": "Profil", 
+    "dashboard": "Dashboard",
+    "settings": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "actions": {
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "generate": "Wörter generieren",
+    "retry": "Erneut versuchen",
+    "share": "Teilen",
+    "close": "Schließen"
+  },
+  "errors": {
+    "required": "Dieses Feld ist erforderlich",
+    "invalid": "Ungültige Eingabe",
+    "serverError": "Serverfehler aufgetreten",
+    "networkError": "Netzwerkfehler aufgetreten",
+    "unauthorized": "Nicht autorisierter Zugriff",
+    "notFound": "Nicht gefunden"
+  },
+  "success": {
+    "saved": "Erfolgreich gespeichert",
+    "deleted": "Erfolgreich gelöscht",
+    "updated": "Erfolgreich aktualisiert",
+    "generated": "Wörter erfolgreich generiert"
+  },
+  "filters": {
+    "language": "Sprache",
+    "wordLength": "Wortlänge",
+    "difficulty": "Schwierigkeit",
+    "category": "Kategorie"
+  },
+  "labels": {
+    "score": "Punktzahl",
+    "time": "Zeit",
+    "level": "Level",
+    "progress": "Fortschritt",
+    "achievements": "Erfolge",
+    "statistics": "Statistiken",
+    "settings": "Einstellungen",
+    "help": "Hilfe"
+  },
+  "placeholders": {
+    "enterLetters": "Buchstaben eingeben...",
+    "search": "Suchen...",
+    "username": "Benutzername",
+    "password": "Passwort"
+  },
+  "tooltips": {
+    "generateWords": "Klicken, um Wörter aus Eingabebuchstaben zu generieren",
+    "saveProgress": "Aktuellen Fortschritt speichern",
+    "shareResults": "Teilen Sie Ihre Ergebnisse mit anderen",
+    "settings": "Einstellungsmenü öffnen"
+  }
+}
