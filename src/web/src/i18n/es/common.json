@@ -1,0 +1,91 @@
+{
+  "app": {
+    "name": "Generador de Palabras Aleatorias",
+    "description": "Genera palabras significativas a partir de caracteres aleatorios",
+    "version": "Versión {{version}}",
+    "loading": "Cargando...",
+    "copyright": "© {{year}} Generador de Palabras Aleatorias. Todos los derechos reservados."
+  },
+  "navigation": {
+    "home": "Inicio",
+    "game": "Jugar",
+    "profile": "Perfil",
+    "dashboard": "Panel",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "logout": "Cerrar Sesión"
+  },
+  "buttons": {
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "retry": "Intentar de Nuevo",
+    "confirm": "Confirmar",
+    "close": "Cerrar"
+  },
+  "errors": {
+    "general": "Ha ocurrido un error. Por favor, inténtelo de nuevo.",
+    "network": "Error de red. Por favor, compruebe su conexión.",
+    "auth": {
+      "required": "Autenticación requerida",
+      "invalid": "Credenciales inválidas",
+      "expired": "Sesión expirada. Por favor, inicie sesión de nuevo."
+    },
+    "validation": {
+      "required": "Este campo es obligatorio",
+      "invalid": "Entrada inválida",
+      "minLength": "Debe tener al menos {{min}} caracteres",
+      "maxLength": "No debe tener más de {{max}} caracteres"
+    },
+    "notFound": "Recurso no encontrado",
+    "serverError": "Error del servidor. Por favor, inténtelo más tarde."
+  },
+  "ui": {
+    "loading": {
+      "text": "Cargando...",
+      "data": "Cargando datos...",
+      "processing": "Procesando..."
+    },
+    "filters": {
+      "all": "Todos",
+      "sort": "Ordenar por",
+      "filter": "Filtrar",
+      "search": "Buscar"
+    },
+    "confirmation": {
+      "title": "¿Está seguro?",
+      "delete": "¿Está seguro de que desea eliminar esto?",
+      "cancel": "¿Está seguro de que desea cancelar?",
+      "unsaved": "Tiene cambios sin guardar. ¿Está seguro de que desea salir?"
+    },
+    "notifications": {
+      "success": "¡Éxito!",
+      "error": "¡Error!",
+      "warning": "¡Advertencia!",
+      "info": "Información"
+    },
+    "pagination": {
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "page": "Página {{page}} de {{total}}",
+      "perPage": "Elementos por página"
+    },
+    "accessibility": {
+      "skipToContent": "Saltar al contenido",
+      "menuToggle": "Alternar menú",
+      "darkMode": "Alternar modo oscuro",
+      "closeModal": "Cerrar modal"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch",
+    "select": "Seleccionar idioma"
+  }
+}
