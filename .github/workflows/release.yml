@@ -1,0 +1,200 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (semver)'
+        required: true
+        type: string
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  RELEASE_VERSION: ${{ github.event.inputs.version }}
+  ENVIRONMENT: ${{ github.event.inputs.environment }}
+  DEPLOYMENT_TIMEOUT: 1800
+  HEALTH_CHECK_RETRIES: 5
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.changelog.outputs.content }}
+      branch: ${{ steps.create-branch.outputs.branch }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Validate version format
+        run: |
+          if ! [[ $RELEASE_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Invalid semantic version format"
+            exit 1
+          fi
+
+      - name: Create release branch
+        id: create-branch
+        run: |
+          BRANCH="release/v${RELEASE_VERSION}"
+          git checkout -b $BRANCH
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          CHANGELOG=$(git log --pretty=format:"- %s (%h)" $(git describe --tags --abbrev=0)..HEAD)
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update version numbers
+        run: |
+          cd src/backend && npm version $RELEASE_VERSION --no-git-tag-version
+          cd ../web && npm version $RELEASE_VERSION --no-git-tag-version
+          git add .
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "chore: bump version to ${RELEASE_VERSION}"
+
+  deploy-backend:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.prepare-release.outputs.branch }}
+
+      - name: Login to container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Trigger backend deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'backend.yml',
+              ref: '${{ needs.prepare-release.outputs.branch }}',
+              inputs: {
+                environment: '${{ github.event.inputs.environment }}'
+              }
+            })
+
+      - name: Wait for backend deployment
+        timeout-minutes: 30
+        run: |
+          attempts=0
+          max_attempts=$HEALTH_CHECK_RETRIES
+          until curl -s -f "https://api.${{ github.event.inputs.environment }}.wordgenerator.com/health" || [ $attempts -eq $max_attempts ]
+          do
+            attempts=$((attempts+1))
+            sleep 60
+          done
+          if [ $attempts -eq $max_attempts ]; then
+            echo "Backend deployment health check failed"
+            exit 1
+          fi
+
+  deploy-frontend:
+    needs: [prepare-release, deploy-backend]
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.prepare-release.outputs.branch }}
+
+      - name: Login to container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Trigger frontend deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'frontend.yml',
+              ref: '${{ needs.prepare-release.outputs.branch }}',
+              inputs: {
+                environment: '${{ github.event.inputs.environment }}'
+              }
+            })
+
+      - name: Wait for frontend deployment
+        timeout-minutes: 30
+        run: |
+          attempts=0
+          max_attempts=$HEALTH_CHECK_RETRIES
+          until curl -s -f "https://${{ github.event.inputs.environment }}.wordgenerator.com" || [ $attempts -eq $max_attempts ]
+          do
+            attempts=$((attempts+1))
+            sleep 60
+          done
+          if [ $attempts -eq $max_attempts ]; then
+            echo "Frontend deployment health check failed"
+            exit 1
+          fi
+
+  finalize-release:
+    needs: [deploy-frontend, prepare-release]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.prepare-release.outputs.branch }}
+
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.RELEASE_VERSION }}
+          release_name: Release v${{ env.RELEASE_VERSION }}
+          body: ${{ needs.prepare-release.outputs.changelog }}
+          draft: false
+          prerelease: ${{ github.event.inputs.environment == 'staging' }}
+
+      - name: Merge release branch
+        if: github.event.inputs.environment == 'production'
+        run: |
+          git checkout main
+          git merge --no-ff ${{ needs.prepare-release.outputs.branch }}
+          git push origin main
+          git tag -a v${{ env.RELEASE_VERSION }} -m "Release v${{ env.RELEASE_VERSION }}"
+          git push origin v${{ env.RELEASE_VERSION }}
+
+      - name: Cleanup
+        if: always()
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+            git push origin --delete ${{ needs.prepare-release.outputs.branch }}
+          fi
