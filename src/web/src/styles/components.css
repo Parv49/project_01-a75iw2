@@ -1,0 +1,163 @@
+/* ==========================================================================
+   Random Word Generator - Component Styles
+   Version: 1.0.0
+   Integration: tailwindcss@3.3.0
+   ========================================================================== */
+
+@import '../styles/variables.css';
+
+@layer components {
+  /* Button Components
+     ========================================================================== */
+  .btn {
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    transition: var(--transition-normal);
+    min-height: 44px;
+    touch-action: manipulation;
+    position: relative;
+    outline-offset: 2px;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+
+  /* Input Field Components
+     ========================================================================== */
+  .input-field {
+    padding: var(--spacing-2);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-md);
+    width: 100%;
+    min-height: 44px;
+    appearance: none;
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    background-color: var(--color-white);
+    transition: var(--transition-normal);
+  }
+
+  .input-field:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+  }
+
+  .input-field:invalid {
+    border-color: var(--color-error);
+  }
+
+  .input-field::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  /* Word Card Components
+     ========================================================================== */
+  .word-card {
+    background: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-4);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-4);
+    transform-origin: center;
+    transition: transform 0.2s ease;
+    border: 1px solid var(--color-gray-200);
+  }
+
+  .word-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Game Board Components
+     ========================================================================== */
+  .game-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    background: var(--color-gray-50);
+    border-radius: var(--border-radius-lg);
+    min-height: 400px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--color-gray-200);
+  }
+
+  /* Responsive Design
+     ========================================================================== */
+  @media (max-width: 768px) {
+    .btn {
+      width: 100%;
+      font-size: var(--font-size-base);
+      padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    .word-card {
+      margin-bottom: var(--spacing-3);
+      padding: var(--spacing-3);
+    }
+
+    .word-card:hover {
+      transform: none;
+    }
+
+    .game-board {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-3);
+      padding: var(--spacing-3);
+    }
+
+    .input-field {
+      font-size: var(--font-size-base);
+      padding: var(--spacing-3);
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .game-board {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .word-card {
+      margin-bottom: var(--spacing-4);
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .game-board {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+}
