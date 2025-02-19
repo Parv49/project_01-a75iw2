@@ -1,0 +1,137 @@
+groups:
+  - name: word_generator_frontend
+    rules:
+      # Page Load Performance Recording Rules
+      - record: page_load_time_seconds
+        expr: rate(page_load_duration_seconds_sum[5m]) / rate(page_load_duration_seconds_count[5m])
+        labels:
+          service: word-generator-frontend
+
+      # High Page Load Time Alert
+      - alert: HighPageLoadTime
+        expr: page_load_time_seconds > 2
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: Page load time exceeds 2 seconds
+          description: Frontend page load time is {{ $value }} seconds
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/frontend-performance
+
+      # Error Rate Recording and Alerting
+      - record: frontend_error_rate
+        expr: rate(frontend_errors_total[5m]) / rate(page_views_total[5m])
+        labels:
+          service: word-generator-frontend
+
+      - alert: HighErrorRate
+        expr: frontend_error_rate > 0.05
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: High frontend error rate detected
+          description: Error rate is {{ $value | humanizePercentage }} over the last 3 minutes
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/frontend-errors
+
+      # Resource Utilization Recording and Alerting
+      - record: frontend_cpu_utilization
+        expr: sum(rate(container_cpu_usage_seconds_total{container="word-generator-frontend"}[5m])) by (pod)
+        labels:
+          service: word-generator-frontend
+
+      - alert: HighCPUUsage
+        expr: frontend_cpu_utilization > 0.35  # 70% of 0.5 CPU limit
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High CPU usage detected
+          description: Frontend CPU usage is {{ $value | humanizePercentage }} of limit
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/frontend-resources
+
+      - record: frontend_memory_utilization
+        expr: container_memory_usage_bytes{container="word-generator-frontend"} / 1024 / 1024
+        labels:
+          service: word-generator-frontend
+
+      - alert: HighMemoryUsage
+        expr: frontend_memory_utilization > 900  # 900MB of 1GB limit
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High memory usage detected
+          description: Frontend memory usage is {{ $value }}MB
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/frontend-resources
+
+  - name: user_experience_metrics
+    rules:
+      # User Interaction Latency Recording and Alerting
+      - record: user_interaction_latency_seconds
+        expr: rate(user_interaction_duration_seconds_sum[5m]) / rate(user_interaction_duration_seconds_count[5m])
+        labels:
+          service: word-generator-frontend
+
+      - alert: HighInteractionLatency
+        expr: user_interaction_latency_seconds > 0.1  # 100ms threshold
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: User interaction latency is high
+          description: Frontend interaction latency is {{ $value * 1000 }}ms
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/frontend-latency
+
+      # User Session Duration Recording and Alerting
+      - record: avg_session_duration_minutes
+        expr: rate(user_session_duration_seconds_sum[30m]) / rate(user_session_duration_seconds_count[30m]) / 60
+        labels:
+          service: word-generator-frontend
+
+      - alert: LowUserEngagement
+        expr: avg_session_duration_minutes < 5  # Below 5 minutes threshold
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Low user engagement detected
+          description: Average session duration is {{ $value }} minutes
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/user-engagement
+
+  - name: word_generation_frontend
+    rules:
+      # Word Display Performance Recording and Alerting
+      - record: word_display_latency_seconds
+        expr: rate(word_display_duration_seconds_sum[5m]) / rate(word_display_duration_seconds_count[5m])
+        labels:
+          service: word-generator-frontend
+
+      - alert: SlowWordDisplay
+        expr: word_display_latency_seconds > 0.5  # 500ms threshold
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: Word display is slow
+          description: Word display latency is {{ $value * 1000 }}ms
+          dashboard: https://grafana/d/frontend-service-metrics
+          runbook_url: https://runbook/word-display-performance
+
+      # Active Users Recording
+      - record: active_users_count
+        expr: sum(active_users_gauge) by (instance)
+        labels:
+          service: word-generator-frontend
+
+      # Success Rate Recording
+      - record: word_generation_success_rate
+        expr: rate(successful_word_generations_total[5m]) / rate(word_generation_requests_total[5m])
+        labels:
+          service: word-generator-frontend
