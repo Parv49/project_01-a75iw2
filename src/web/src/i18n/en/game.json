@@ -1,0 +1,111 @@
+{
+  "modes": {
+    "practice": "Practice Mode",
+    "timed": "Timed Mode",
+    "challenge": "Challenge Mode",
+    "practice_description": "Practice at your own pace without time limits",
+    "timed_description": "Race against the clock to find as many words as possible",
+    "challenge_description": "Complete daily word challenges to earn achievements"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "easy_description": "More time, unlimited hints, shorter words",
+    "medium_description": "Balanced challenge with limited hints",
+    "hard_description": "Strict time limits, minimal hints, longer words required"
+  },
+  "status": {
+    "idle": "Ready to Start",
+    "playing": "Game in Progress",
+    "paused": "Game Paused",
+    "completed": "Game Completed",
+    "loading": "Loading Game",
+    "error": "Game Error",
+    "saving": "Saving Progress"
+  },
+  "game_controls": {
+    "start": "Start Game",
+    "pause": "Pause Game",
+    "resume": "Resume Game",
+    "end": "End Game",
+    "restart": "Play Again",
+    "use_hint": "Use Hint",
+    "submit": "Submit Word",
+    "skip": "Skip Word",
+    "shuffle": "Shuffle Letters",
+    "clear": "Clear Input"
+  },
+  "settings": {
+    "time_limit": "Time Limit",
+    "word_length": "Word Length",
+    "hints": "Hints Available",
+    "min_length": "Minimum Word Length",
+    "max_length": "Maximum Word Length",
+    "difficulty_level": "Difficulty Level",
+    "sound_effects": "Sound Effects",
+    "animations": "Animations",
+    "high_contrast": "High Contrast Mode",
+    "screen_reader": "Screen Reader Support"
+  },
+  "scoring": {
+    "current_score": "Current Score",
+    "time_bonus": "Time Bonus",
+    "word_points": "Word Points",
+    "total_score": "Total Score",
+    "words_found": "Words Found",
+    "high_score": "High Score",
+    "daily_best": "Today's Best",
+    "weekly_best": "Weekly Best",
+    "bonus_multiplier": "Score Multiplier",
+    "streak_bonus": "Word Streak Bonus",
+    "level_progress": "Level Progress"
+  },
+  "messages": {
+    "success": {
+      "word_found": "Great! '{word}' is valid!",
+      "level_complete": "Congratulations! Level completed!",
+      "high_score": "New high score achieved!",
+      "hint_used": "Hint revealed: {hint}",
+      "streak_achieved": "Word streak: {count}!",
+      "achievement_unlocked": "Achievement unlocked: {name}",
+      "perfect_score": "Perfect score! Outstanding!",
+      "bonus_unlocked": "Bonus round unlocked!"
+    },
+    "error": {
+      "invalid_word": "'{word}' is not a valid word",
+      "too_short": "Word must be at least {min} letters",
+      "too_long": "Word cannot exceed {max} letters",
+      "already_found": "You've already found '{word}'",
+      "no_hints": "No hints remaining",
+      "time_up": "Time's up!",
+      "connection_lost": "Connection lost. Trying to reconnect...",
+      "save_failed": "Failed to save progress",
+      "invalid_characters": "Only letters are allowed",
+      "game_error": "Game error occurred. Please try again"
+    },
+    "info": {
+      "time_remaining": "{time} seconds remaining",
+      "hints_remaining": "{count} hints remaining",
+      "game_paused": "Game is paused",
+      "ready_to_start": "Ready to start?",
+      "final_score": "Final Score: {score}",
+      "loading_dictionary": "Loading dictionary...",
+      "saving_progress": "Saving your progress...",
+      "daily_challenge": "New challenge available!",
+      "tutorial_tip": "Tip: {message}",
+      "level_up": "Level up! New features unlocked"
+    }
+  },
+  "prompts": {
+    "enter_letters": "Enter letters to generate words",
+    "confirm_end": "Are you sure you want to end the game? Progress will be saved",
+    "save_score": "Would you like to save your score?",
+    "share_result": "Share your achievement",
+    "rate_game": "Enjoying the game? Rate us!",
+    "tutorial_skip": "Skip tutorial?",
+    "difficulty_change": "Change difficulty level?",
+    "clear_progress": "Clear all progress?",
+    "enable_notifications": "Enable notifications for daily challenges?"
+  }
+}
