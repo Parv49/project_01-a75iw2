@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Primary Meta Tags -->
+    <title>Random Word Generator</title>
+    <meta name="description" content="Random Word Generator - Educational tool for word discovery and language learning">
+    <meta name="keywords" content="word generator, language learning, educational tool, vocabulary builder">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Random Word Generator">
+    <meta property="og:description" content="Educational tool for word discovery and language learning">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Random Word Generator">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.dictionaryapi.dev;">
+    
+    <!-- Preconnect and DNS Prefetch -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.dictionaryapi.dev">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/src/styles/global.css" as="style">
+    <link rel="preload" href="/src/main.tsx" as="script" type="module">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/src/styles/global.css">
+    
+    <!-- Application Scripts -->
+    <script type="module" src="/src/main.tsx"></script>
+</head>
+<body>
+    <!-- Application Root -->
+    <div id="root" role="main" aria-live="polite"></div>
+    
+    <!-- Noscript Fallback -->
+    <noscript>
+        <div class="noscript-message">
+            <h1>JavaScript Required</h1>
+            <p>Please enable JavaScript to use the Random Word Generator application.</p>
+        </div>
+    </noscript>
+    
+    <!-- Loading State -->
+    <div id="loading-root" aria-hidden="true" style="display: none;">
+        <div class="loading-spinner" role="status">
+            <span class="visually-hidden">Loading application...</span>
+        </div>
+    </div>
+    
+    <!-- Error Boundary Root -->
+    <div id="error-root" aria-hidden="true" style="display: none;"></div>
+    
+    <!-- Portal Root for Modals -->
+    <div id="portal-root"></div>
+</body>
+</html>
