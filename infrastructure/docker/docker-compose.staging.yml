@@ -1,0 +1,158 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ../../src/backend
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - NODE_ENV=staging
+      - PORT=3000
+      - API_VERSION=v1
+      - DATABASE_URL=postgresql://postgres:staging@db:5432/wordgen
+      - REDIS_URL=redis://cache:6379
+      - LOG_LEVEL=info
+      - METRICS_ENABLED=true
+      - PROMETHEUS_METRICS_PATH=/metrics
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2GB
+        reservations:
+          cpus: '0.5'
+          memory: 1GB
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - cache
+    healthcheck:
+      test: curl -f http://localhost:3000/api/v1/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - staging_network
+
+  frontend:
+    build:
+      context: ../../src/web
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - NODE_ENV=staging
+      - VITE_API_URL=http://backend:3000
+      - VITE_API_VERSION=v1
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1GB
+        reservations:
+          cpus: '0.25'
+          memory: 512MB
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - staging_network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=wordgen
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=staging
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2GB
+        reservations:
+          cpus: '0.5'
+          memory: 1GB
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - staging_network
+
+  cache:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1GB
+        reservations:
+          cpus: '0.25'
+          memory: 512MB
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: redis-cli ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - staging_network
+
+  prometheus:
+    image: prom/prometheus:v2.45
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+    networks:
+      - staging_network
+
+  grafana:
+    image: grafana/grafana:9.5
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - staging_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  staging_network:
+    driver: bridge
