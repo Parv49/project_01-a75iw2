@@ -1,0 +1,181 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: word-generator
+  labels:
+    app: alertmanager
+    component: monitoring
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9093'
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - alertmanager
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:v0.25.0
+        args:
+        - --config.file=/etc/alertmanager/alertmanager.yml
+        - --storage.path=/alertmanager
+        - --cluster.listen-address=:9094
+        - --cluster.peer=alertmanager-0.alertmanager:9094
+        - --cluster.peer=alertmanager-1.alertmanager:9094
+        ports:
+        - name: http
+          containerPort: 9093
+        - name: cluster
+          containerPort: 9094
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "200m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: 9093
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /-/ready
+            port: 9093
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: config
+          mountPath: /etc/alertmanager
+        - name: storage
+          mountPath: /alertmanager
+      volumes:
+      - name: config
+        configMap:
+          name: alertmanager-config
+      - name: storage
+        persistentVolumeClaim:
+          claimName: alertmanager-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: word-generator
+  labels:
+    app: alertmanager
+    component: monitoring
+spec:
+  selector:
+    app: alertmanager
+  ports:
+  - name: http
+    port: 9093
+    targetPort: 9093
+  - name: cluster
+    port: 9094
+    targetPort: 9094
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: word-generator
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: 'smtp.word-generator.com:587'
+      smtp_from: 'alerts@word-generator.com'
+      smtp_auth_username: '${SMTP_USERNAME}'
+      smtp_auth_password: '${SMTP_PASSWORD}'
+      pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+
+    templates:
+    - '/etc/alertmanager/templates/*.tmpl'
+
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      receiver: default-receiver
+      routes:
+      - match:
+          severity: critical
+        receiver: critical-receiver
+        group_wait: 0s
+        repeat_interval: 1h
+      - match:
+          severity: warning
+        receiver: warning-receiver
+        group_wait: 1m
+        repeat_interval: 6h
+
+    inhibit_rules:
+    - source_match:
+        severity: critical
+      target_match:
+        severity: warning
+      equal: ['alertname', 'cluster', 'service']
+
+    receivers:
+    - name: default-receiver
+      email_configs:
+      - to: 'team@word-generator.com'
+        send_resolved: true
+        html: '{{ template "email.default.html" . }}'
+
+    - name: critical-receiver
+      email_configs:
+      - to: 'oncall@word-generator.com'
+        send_resolved: true
+        html: '{{ template "email.critical.html" . }}'
+      pagerduty_configs:
+      - routing_key: '${PAGERDUTY_SERVICE_KEY}'
+        send_resolved: true
+        severity: '{{ .GroupLabels.severity }}'
+
+    - name: warning-receiver
+      email_configs:
+      - to: 'alerts@word-generator.com'
+        send_resolved: true
+        html: '{{ template "email.warning.html" . }}'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: alertmanager-storage
+  namespace: word-generator
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
