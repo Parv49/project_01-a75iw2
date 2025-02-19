@@ -1,0 +1,277 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "datasource": "Prometheus",
+        "enable": true,
+        "expr": "changes(version{service=\"backend\"}[1m]) > 0",
+        "name": "Deployments",
+        "showIn": 0,
+        "tagKeys": ["version", "service"],
+        "type": "prometheus"
+      },
+      {
+        "datasource": "Prometheus", 
+        "enable": true,
+        "expr": "sum(increase(errors_total[5m])) > 0",
+        "name": "Errors",
+        "showIn": 0,
+        "tagKeys": ["error_type", "endpoint"],
+        "type": "prometheus"
+      }
+    ]
+  },
+  "description": "Backend service monitoring dashboard providing real-time visualization of performance metrics, system health, and operational insights",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "API Performance",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "green" },
+              { "value": 100, "color": "yellow" },
+              { "value": 2000, "color": "red" }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "expr": "rate(request_duration_seconds_sum[5m])",
+          "legendFormat": "Request Duration"
+        },
+        {
+          "expr": "rate(api_latency_seconds_sum[5m])",
+          "legendFormat": "API Latency"
+        },
+        {
+          "expr": "rate(word_generation_duration_seconds_sum[5m])",
+          "legendFormat": "Word Generation Time"
+        },
+        {
+          "expr": "rate(dictionary_lookup_duration_seconds_sum[5m])",
+          "legendFormat": "Dictionary Lookup Time"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "title": "System Resources",
+      "type": "gauge",
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "value": null, "color": "green" },
+              { "value": 70, "color": "yellow" },
+              { "value": 85, "color": "red" }
+            ]
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg(system_memory_usage_percent)",
+          "legendFormat": "Memory Usage"
+        },
+        {
+          "expr": "avg(system_cpu_usage_percent)",
+          "legendFormat": "CPU Usage"
+        },
+        {
+          "expr": "avg(system_disk_usage_percent)",
+          "legendFormat": "Disk Usage"
+        },
+        {
+          "expr": "rate(network_bytes_total[5m])",
+          "legendFormat": "Network Throughput"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      }
+    },
+    {
+      "title": "Error Tracking",
+      "type": "stat",
+      "datasource": "Prometheus",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "sum(increase(errors_total[5m])) by (error_type, endpoint, status_code)",
+          "legendFormat": "{{error_type}} - {{endpoint}} ({{status_code}})"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      }
+    },
+    {
+      "title": "User Activity",
+      "type": "timeseries",
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "spanNulls": false,
+            "showPoints": "auto"
+          }
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(active_users_total)",
+          "legendFormat": "Active Users"
+        },
+        {
+          "expr": "avg(user_session_duration_seconds)",
+          "legendFormat": "Avg Session Duration"
+        },
+        {
+          "expr": "rate(user_requests_total[5m])",
+          "legendFormat": "Request Rate"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      }
+    },
+    {
+      "title": "Cache Performance",
+      "type": "gauge",
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "value": null, "color": "red" },
+              { "value": 60, "color": "yellow" },
+              { "value": 80, "color": "green" }
+            ]
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg(cache_hit_ratio_percent)",
+          "legendFormat": "Cache Hit Rate"
+        },
+        {
+          "expr": "avg(cache_usage_bytes/cache_limit_bytes * 100)",
+          "legendFormat": "Cache Usage"
+        },
+        {
+          "expr": "rate(cache_evictions_total[5m])",
+          "legendFormat": "Eviction Rate"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["backend", "monitoring"],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(env)",
+        "hide": 0,
+        "includeAll": true,
+        "name": "environment",
+        "query": "label_values(env)",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(service)",
+        "hide": 0,
+        "includeAll": true,
+        "name": "service",
+        "query": "label_values(service)",
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Backend Service Dashboard",
+  "uid": "backend-service-metrics",
+  "version": 1,
+  "weekStart": ""
+}
