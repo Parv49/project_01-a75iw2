@@ -1,0 +1,166 @@
+name: Infrastructure Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infrastructure/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'infrastructure/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'prod'
+
+env:
+  TF_VERSION: '1.5.0'
+  AWS_REGION: 'us-west-2'
+  TF_BACKEND_BUCKET: 'word-generator-tf-state'
+  TF_BACKEND_LOCK_TABLE: 'word-generator-tf-locks'
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  deployments: write
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+            .terraform
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Format Check
+        working-directory: infrastructure/terraform/environments/prod
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        working-directory: infrastructure/terraform/environments/prod
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ env.TF_BACKEND_BUCKET }}" \
+            -backend-config="dynamodb_table=${{ env.TF_BACKEND_LOCK_TABLE }}" \
+            -backend-config="region=${{ env.AWS_REGION }}"
+
+      - name: Terraform Validate
+        working-directory: infrastructure/terraform/environments/prod
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: infrastructure/terraform/environments/prod
+        run: |
+          terraform plan -out=tfplan -detailed-exitcode
+        continue-on-error: true
+        id: plan
+
+      - name: Upload Terraform Plan
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: infrastructure/terraform/environments/prod/tfplan
+          retention-days: 5
+
+      - name: Add Plan Comment to PR
+        if: github.event_name == 'pull_request'
+        run: |
+          PLAN=$(terraform show -no-color tfplan)
+          echo "Terraform Plan Output:" > plan.txt
+          echo "\`\`\`" >> plan.txt
+          echo "$PLAN" >> plan.txt
+          echo "\`\`\`" >> plan.txt
+          gh pr comment ${{ github.event.pull_request.number }} -F plan.txt
+        working-directory: infrastructure/terraform/environments/prod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  terraform-apply:
+    name: Terraform Apply
+    needs: terraform-plan
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency: production
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+            .terraform
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        working-directory: infrastructure/terraform/environments/prod
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ env.TF_BACKEND_BUCKET }}" \
+            -backend-config="dynamodb_table=${{ env.TF_BACKEND_LOCK_TABLE }}" \
+            -backend-config="region=${{ env.AWS_REGION }}"
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-plan
+          path: infrastructure/terraform/environments/prod
+
+      - name: Terraform Apply
+        working-directory: infrastructure/terraform/environments/prod
+        run: |
+          terraform apply -auto-approve tfplan
+
+      - name: Notify Deployment Status
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          MESSAGE="Infrastructure deployment to production $STATUS"
+          echo "::notice::$MESSAGE"
