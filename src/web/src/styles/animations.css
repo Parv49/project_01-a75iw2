@@ -1,0 +1,157 @@
+/* ==========================================================================
+   Random Word Generator - Core CSS Animations
+   Version: 1.0.0
+   Performance: Hardware-accelerated animations with <100ms response time
+   Accessibility: Supports prefers-reduced-motion
+   ========================================================================== */
+
+@import '../styles/variables.css';
+
+/* Keyframe Animations
+   ========================================================================== */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-5px, 0, 0);
+  }
+  75% {
+    transform: translate3d(5px, 0, 0);
+  }
+}
+
+/* Animation Classes
+   ========================================================================== */
+
+.fade-in {
+  animation: fadeIn var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.fade-out {
+  animation: fadeOut var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.slide-in {
+  animation: slideIn var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  transform-origin: top center;
+}
+
+.slide-out {
+  animation: slideOut var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  transform-origin: top center;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.button-pulse {
+  animation: pulse var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.error-shake {
+  animation: shake var(--transition-fast) cubic-bezier(0.36, 0, 0.66, -0.56);
+  will-change: transform;
+}
+
+/* Accessibility - Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    animation-delay: 0ms !important;
+  }
+
+  .loading-spinner {
+    animation: none !important;
+  }
+
+  .button-pulse {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .error-shake {
+    animation: none !important;
+    transform: none !important;
+  }
+}
