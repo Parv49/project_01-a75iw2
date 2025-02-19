@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: word-generator
+  labels:
+    app: frontend
+    component: web
+    environment: production
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
+    prometheus.io/path: "/metrics"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: frontend
+    component: web
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+  publishNotReadyAddresses: false
