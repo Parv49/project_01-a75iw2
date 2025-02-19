@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: word-generator
+  labels:
+    name: word-generator
+    app: random-word-generator
+    environment: production
+    managed-by: terraform
+    tier: application
+    criticality: high
+  annotations:
+    description: "Production namespace for Random Word Generator application components"
+    team: platform-engineering
+    cost-center: word-generator-prod
+    backup-policy: daily
+    security-zone: restricted
+    compliance-level: high
+    monitoring-tier: premium
