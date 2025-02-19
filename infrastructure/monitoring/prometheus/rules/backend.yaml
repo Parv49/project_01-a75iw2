@@ -1,0 +1,132 @@
+groups:
+  # Backend service monitoring rules
+  - name: word_generator_backend
+    rules:
+      # Record API response times
+      - record: api_response_time_seconds
+        expr: rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])
+        labels:
+          service: word-generator-backend
+
+      # Alert on high API response time
+      - alert: APIHighResponseTime
+        expr: api_response_time_seconds > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: API response time exceeds 2 seconds
+          description: Backend API response time is {{ $value }} seconds
+
+      # Alert on high error rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: High error rate detected
+          description: Error rate is above 5% for 5 minutes
+
+      # Alert on high CPU usage
+      - alert: HighCPUUsage
+        expr: container_cpu_usage_seconds_total{container="word-generator-backend"} > 0.7
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: High CPU usage detected
+          description: Backend CPU usage is above 70%
+
+      # Alert on high memory usage (7GB threshold based on 8GB spec)
+      - alert: HighMemoryUsage
+        expr: container_memory_usage_bytes{container="word-generator-backend"} > 7516192768
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: High memory usage detected
+          description: Backend memory usage is above 7GB
+
+      # Alert on service availability
+      - alert: ServiceUnavailable
+        expr: up{job="word-generator-backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Backend service is down
+          description: Word generator backend service is not responding
+
+  # Word generation performance monitoring
+  - name: word_generation_performance
+    rules:
+      # Record word generation times
+      - record: word_generation_time_seconds
+        expr: rate(word_generation_duration_seconds_sum[5m]) / rate(word_generation_duration_seconds_count[5m])
+        labels:
+          service: word-generator-backend
+
+      # Alert on slow word generation
+      - alert: SlowWordGeneration
+        expr: word_generation_time_seconds > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Word generation is slow
+          description: Word generation time exceeds 2 seconds
+
+  # Dictionary validation performance monitoring
+  - name: dictionary_validation_performance
+    rules:
+      # Record dictionary validation times
+      - record: dictionary_validation_time_seconds
+        expr: rate(dictionary_validation_duration_seconds_sum[5m]) / rate(dictionary_validation_duration_seconds_count[5m])
+        labels:
+          service: word-generator-backend
+
+      # Alert on slow dictionary validation
+      - alert: SlowDictionaryValidation
+        expr: dictionary_validation_time_seconds > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Dictionary validation is slow
+          description: Dictionary validation time exceeds 1 second
+
+  # Resource utilization monitoring
+  - name: resource_utilization
+    rules:
+      # Record concurrent user count
+      - record: concurrent_users
+        expr: sum(rate(http_requests_total[1m]))
+        labels:
+          service: word-generator-backend
+
+      # Alert on high concurrent users
+      - alert: HighConcurrentUsers
+        expr: concurrent_users > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High concurrent user load
+          description: More than 100 concurrent users detected
+
+      # Record system availability percentage
+      - record: system_availability_percent
+        expr: (1 - (count(up{job="word-generator-backend"} == 0) / count(up{job="word-generator-backend"}))) * 100
+        labels:
+          service: word-generator-backend
+
+      # Alert on system availability below target
+      - alert: LowSystemAvailability
+        expr: system_availability_percent < 99.9
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: System availability below SLA
+          description: System availability has dropped below 99.9%
