@@ -1,0 +1,72 @@
+{
+  "profile": {
+    "title": "Benutzerprofil",
+    "subtitle": "Sehen und verwalten Sie Ihren Fortschritt",
+    "sections": {
+      "overview": "Profilübersicht",
+      "statistics": "Ihre Statistiken",
+      "achievements": "Erfolge",
+      "preferences": "Einstellungen",
+      "history": "Spielverlauf"
+    },
+    "stats": {
+      "totalGames": "Gespielte Spiele",
+      "wordsFound": "Gefundene Wörter",
+      "averageScore": "Durchschnittliche Punktzahl",
+      "bestScore": "Beste Punktzahl",
+      "totalTime": "Gesamtspielzeit",
+      "successRate": "Erfolgsquote",
+      "wordsPerGame": "Wörter pro Spiel",
+      "favoriteWords": "Lieblingswörter"
+    },
+    "achievements": {
+      "title": "Ihre Erfolge",
+      "unlocked": "Freigeschaltet",
+      "locked": "Gesperrt",
+      "progress": "Erfolgsfortschritt",
+      "types": {
+        "beginner": "Wort-Anfänger",
+        "intermediate": "Wort-Entdecker",
+        "advanced": "Wort-Meister",
+        "expert": "Wort-Champion"
+      }
+    },
+    "preferences": {
+      "title": "Profileinstellungen",
+      "language": "Bevorzugte Sprache",
+      "difficulty": "Standard-Schwierigkeit",
+      "theme": "Oberflächendesign",
+      "notifications": "Benachrichtigungen",
+      "privacy": "Datenschutzeinstellungen"
+    },
+    "progress": {
+      "title": "Lernfortschritt",
+      "level": "Aktuelles Level",
+      "nextLevel": "Nächstes Level",
+      "xpNeeded": "Benötigte XP",
+      "totalXP": "Gesamt-XP",
+      "weeklyProgress": "Wöchentlicher Fortschritt",
+      "monthlyProgress": "Monatlicher Fortschritt"
+    },
+    "actions": {
+      "editProfile": "Profil bearbeiten",
+      "saveChanges": "Änderungen speichern",
+      "exportData": "Daten exportieren",
+      "deleteAccount": "Konto löschen",
+      "resetProgress": "Fortschritt zurücksetzen",
+      "shareProfile": "Profil teilen"
+    },
+    "confirmations": {
+      "deleteAccount": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+      "resetProgress": "Sind Sie sicher, dass Sie Ihren Fortschritt zurücksetzen möchten?",
+      "saveChanges": "Änderungen am Profil speichern?"
+    },
+    "tooltips": {
+      "editProfile": "Bearbeiten Sie Ihre Profilinformationen",
+      "shareProfile": "Teilen Sie Ihr Profil mit anderen",
+      "exportData": "Laden Sie Ihre Profildaten herunter",
+      "achievements": "Detaillierte Erfolgsinformationen anzeigen",
+      "statistics": "Detaillierte Statistiken anzeigen"
+    }
+  }
+}
