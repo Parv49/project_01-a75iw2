@@ -1,0 +1,72 @@
+{
+  "title": "Perfil",
+  "header": {
+    "welcome": "Bienvenido, {{username}}",
+    "lastLogin": "Último acceso: {{date}}"
+  },
+  "statistics": {
+    "title": "Estadísticas",
+    "totalGames": "Total de Juegos",
+    "averageScore": "Puntuación Media",
+    "totalWordsFound": "Total de Palabras Encontradas",
+    "successRate": "Tasa de Éxito",
+    "averageTimePerGame": "Tiempo Medio por Juego",
+    "bestScore": "Mejor Puntuación",
+    "gamesWon": "Juegos Ganados",
+    "winRate": "Tasa de Victoria",
+    "loading": "Cargando estadísticas...",
+    "error": "Error al cargar las estadísticas"
+  },
+  "achievements": {
+    "title": "Logros",
+    "locked": "Bloqueado",
+    "unlocked": "Desbloqueado el {{date}}",
+    "progress": "Progreso: {{current}}/{{total}}",
+    "empty": "Aún no hay logros",
+    "loading": "Cargando logros...",
+    "error": "Error al cargar los logros",
+    "categories": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado",
+      "expert": "Experto"
+    }
+  },
+  "progress": {
+    "title": "Progreso de Aprendizaje",
+    "chart": {
+      "title": "Progreso a lo Largo del Tiempo",
+      "xAxis": "Período de Tiempo",
+      "yAxis": "Palabras Aprendidas",
+      "tooltip": "{{count}} palabras el {{date}}"
+    },
+    "levels": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio", 
+      "advanced": "Avanzado"
+    },
+    "loading": "Cargando datos de progreso...",
+    "error": "Error al cargar los datos de progreso",
+    "empty": "No hay datos de progreso disponibles"
+  },
+  "actions": {
+    "editProfile": "Editar Perfil",
+    "shareProgress": "Compartir Progreso",
+    "exportData": "Exportar Datos",
+    "resetStats": "Reiniciar Estadísticas",
+    "viewDetails": "Ver Detalles"
+  },
+  "confirmations": {
+    "resetStats": {
+      "title": "Reiniciar Estadísticas",
+      "message": "¿Está seguro de que desea reiniciar sus estadísticas? Esta acción no se puede deshacer.",
+      "confirm": "Sí, Reiniciar",
+      "cancel": "Cancelar"
+    }
+  },
+  "notifications": {
+    "statsReset": "Las estadísticas se han reiniciado correctamente",
+    "exportSuccess": "Datos exportados correctamente",
+    "shareCopied": "Enlace de compartir copiado al portapapeles"
+  }
+}
