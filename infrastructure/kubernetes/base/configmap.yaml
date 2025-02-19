@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: word-generator-config
+  namespace: word-generator
+  labels:
+    app: random-word-generator
+    environment: production
+data:
+  # Backend service configuration
+  APP_CONFIG: |
+    PORT=3000
+    NODE_ENV=production
+    LOG_LEVEL=info
+    API_VERSION=v1
+    CORS_ORIGINS=https://*.word-generator.com
+    MAX_REQUEST_SIZE=1mb
+    RATE_LIMIT_WINDOW=15m
+    RATE_LIMIT_MAX_REQUESTS=100
+
+  # Database configuration
+  DATABASE_CONFIG: |
+    DB_HOST=postgresql.database.svc.cluster.local
+    DB_PORT=5432
+    DB_NAME=word_generator
+    DB_POOL_MIN=5
+    DB_POOL_MAX=20
+    DB_IDLE_TIMEOUT=10000
+
+  # Redis cache configuration  
+  CACHE_CONFIG: |
+    REDIS_HOST=redis.cache.svc.cluster.local
+    REDIS_PORT=6379
+    CACHE_TTL=3600
+    CACHE_MAX_SIZE=1000
+
+  # Monitoring and observability configuration
+  MONITORING_CONFIG: |
+    METRICS_PATH=/metrics
+    HEALTH_CHECK_PATH=/health
+    METRICS_INTERVAL=15
+    TRACING_ENABLED=true
+
+  # Frontend API configuration
+  API_CONFIG: |
+    API_BASE_URL=https://api.word-generator.com
+    API_TIMEOUT=5000
+    RETRY_ATTEMPTS=3
+    RETRY_DELAY=1000
+
+  # Frontend UI configuration
+  UI_CONFIG: |
+    THEME=light
+    LANGUAGE=en
+    ANIMATIONS_ENABLED=true
+    MAX_WORDS_PER_PAGE=50
+
+  # Feature flags configuration
+  FEATURE_FLAGS: |
+    ENABLE_MULTIPLAYER=false
+    ENABLE_ACHIEVEMENTS=true
+    ENABLE_SOCIAL_SHARING=true
+    ENABLE_ADVANCED_FILTERS=true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: word-generator
+  labels:
+    app: random-word-generator
+    component: frontend
+    environment: production
+data:
+  # Frontend environment configuration
+  API_CONFIG: |
+    API_BASE_URL=https://api.word-generator.com
+    API_TIMEOUT=5000
+    RETRY_ATTEMPTS=3
+    RETRY_DELAY=1000
+
+  UI_CONFIG: |
+    THEME=light
+    LANGUAGE=en
+    ANIMATIONS_ENABLED=true
+    MAX_WORDS_PER_PAGE=50
+
+  FEATURE_FLAGS: |
+    ENABLE_MULTIPLAYER=false
+    ENABLE_ACHIEVEMENTS=true
+    ENABLE_SOCIAL_SHARING=true
+    ENABLE_ADVANCED_FILTERS=true
