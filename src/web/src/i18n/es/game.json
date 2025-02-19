@@ -1,0 +1,78 @@
+{
+  "modes": {
+    "practice": "Modo Práctica",
+    "timed": "Modo Contrarreloj",
+    "challenge": "Modo Desafío",
+    "practice_description": "Practica sin límites de tiempo",
+    "timed_description": "Encuentra palabras con límite de tiempo",
+    "challenge_description": "Completa desafíos de palabras"
+  },
+  "difficulty": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil",
+    "easy_description": "Más tiempo, más pistas",
+    "medium_description": "Desafío equilibrado",
+    "hard_description": "Tiempo limitado, menos pistas"
+  },
+  "status": {
+    "idle": "Listo para Empezar",
+    "playing": "Juego en Curso",
+    "paused": "Juego en Pausa",
+    "completed": "Juego Completado"
+  },
+  "game_controls": {
+    "start": "Iniciar Juego",
+    "pause": "Pausar Juego",
+    "resume": "Reanudar Juego",
+    "end": "Terminar Juego",
+    "restart": "Jugar de Nuevo",
+    "use_hint": "Usar Pista",
+    "submit": "Enviar Palabra",
+    "skip": "Saltar Palabra"
+  },
+  "settings": {
+    "time_limit": "Límite de Tiempo",
+    "word_length": "Longitud de Palabra",
+    "hints": "Pistas Disponibles",
+    "min_length": "Longitud Mínima",
+    "max_length": "Longitud Máxima"
+  },
+  "scoring": {
+    "current_score": "Puntuación Actual",
+    "time_bonus": "Bonus de Tiempo",
+    "word_points": "Puntos por Palabra",
+    "total_score": "Puntuación Total",
+    "words_found": "Palabras Encontradas",
+    "high_score": "Puntuación Máxima"
+  },
+  "messages": {
+    "success": {
+      "word_found": "¡Palabra válida encontrada!",
+      "level_complete": "¡Nivel completado!",
+      "high_score": "¡Nueva puntuación máxima!",
+      "hint_used": "Pista revelada"
+    },
+    "error": {
+      "invalid_word": "Palabra inválida",
+      "too_short": "Palabra demasiado corta",
+      "too_long": "Palabra demasiado larga",
+      "already_found": "Palabra ya encontrada",
+      "no_hints": "No quedan pistas",
+      "time_up": "¡Se acabó el tiempo!"
+    },
+    "info": {
+      "time_remaining": "Tiempo restante",
+      "hints_remaining": "Pistas restantes",
+      "game_paused": "Juego en pausa",
+      "ready_to_start": "¿Listo para empezar?",
+      "final_score": "Puntuación Final"
+    }
+  },
+  "prompts": {
+    "enter_letters": "Introduce letras",
+    "confirm_end": "¿Estás seguro de que quieres terminar el juego?",
+    "save_score": "¿Guardar tu puntuación?",
+    "share_result": "Compartir tu resultado"
+  }
+}
