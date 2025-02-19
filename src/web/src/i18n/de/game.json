@@ -1,0 +1,60 @@
+{
+  "modes": {
+    "practice": "Übungsmodus",
+    "timed": "Zeitmodus",
+    "challenge": "Herausforderungsmodus",
+    "practice_description": "Üben Sie in Ihrem eigenen Tempo ohne Zeitlimit",
+    "timed_description": "Finden Sie Wörter gegen die Zeit",
+    "challenge_description": "Testen Sie Ihre Fähigkeiten mit schwierigeren Wörtern und weniger Zeit"
+  },
+  "difficulty": {
+    "easy": "Einfach",
+    "medium": "Mittel",
+    "hard": "Schwer",
+    "easy_description": "2-6 Buchstaben Wörter, 3 Hinweise verfügbar",
+    "medium_description": "3-8 Buchstaben Wörter, 2 Hinweise verfügbar",
+    "hard_description": "4-15 Buchstaben Wörter, 1 Hinweis verfügbar"
+  },
+  "ui": {
+    "start_game": "Spiel starten",
+    "end_game": "Spiel beenden",
+    "pause_game": "Pause",
+    "resume_game": "Fortsetzen",
+    "submit_word": "Absenden",
+    "use_hint": "Hinweis verwenden",
+    "time_remaining": "Verbleibende Zeit",
+    "score": "Punktzahl",
+    "high_score": "Höchstpunktzahl",
+    "word_count": "Gefundene Wörter",
+    "hints_remaining": "Verbleibende Hinweise",
+    "input_placeholder": "Geben Sie Ihr Wort hier ein",
+    "length_filter": "Wortlänge",
+    "settings": "Spieleinstellungen",
+    "instructions": "Anleitung",
+    "leaderboard": "Bestenliste"
+  },
+  "messages": {
+    "game_start": "Spiel startet in 3... 2... 1...",
+    "game_over": "Spiel vorbei!",
+    "time_up": "Zeit abgelaufen!",
+    "new_high_score": "Neue Höchstpunktzahl!",
+    "word_correct": "Sehr gut! Wort gefunden!",
+    "word_incorrect": "Kein gültiges Wort. Versuchen Sie es erneut!",
+    "word_duplicate": "Sie haben dieses Wort bereits gefunden!",
+    "hint_used": "Hinweis verwendet! Punkteabzug angewendet",
+    "no_hints": "Keine Hinweise mehr verfügbar!",
+    "invalid_length": "Das Wort muss zwischen {{min}} und {{max}} Buchstaben haben",
+    "confirm_exit": "Möchten Sie wirklich beenden? Der Fortschritt geht verloren",
+    "loading": "Spiel wird geladen...",
+    "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut"
+  },
+  "scoring": {
+    "points": "Punkte",
+    "base_points": "Basispunkte",
+    "length_bonus": "Längenbonus",
+    "time_bonus": "Zeitbonus",
+    "difficulty_bonus": "Schwierigkeitsbonus",
+    "hint_penalty": "Hinweisabzug",
+    "total_score": "Gesamtpunktzahl"
+  }
+}
