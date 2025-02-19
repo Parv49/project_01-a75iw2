@@ -1,0 +1,72 @@
+{
+  "title": "Profil",
+  "header": {
+    "welcome": "Bienvenue, {{username}}",
+    "lastLogin": "Dernière connexion: {{date}}"
+  },
+  "statistics": {
+    "title": "Statistiques",
+    "totalGames": "Parties Totales",
+    "averageScore": "Score Moyen",
+    "totalWordsFound": "Mots Trouvés au Total",
+    "successRate": "Taux de Réussite",
+    "averageTimePerGame": "Temps Moyen par Partie",
+    "bestScore": "Meilleur Score",
+    "gamesWon": "Parties Gagnées",
+    "winRate": "Taux de Victoire",
+    "loading": "Chargement des statistiques...",
+    "error": "Échec du chargement des statistiques"
+  },
+  "achievements": {
+    "title": "Succès",
+    "locked": "Verrouillé",
+    "unlocked": "Déverrouillé le {{date}}",
+    "progress": "Progression: {{current}}/{{total}}",
+    "empty": "Aucun succès pour le moment",
+    "loading": "Chargement des succès...",
+    "error": "Échec du chargement des succès",
+    "categories": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé",
+      "expert": "Expert"
+    }
+  },
+  "progress": {
+    "title": "Progression d'Apprentissage",
+    "chart": {
+      "title": "Progression dans le Temps",
+      "xAxis": "Période",
+      "yAxis": "Mots Appris",
+      "tooltip": "{{count}} mots le {{date}}"
+    },
+    "levels": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
+    },
+    "loading": "Chargement des données de progression...",
+    "error": "Échec du chargement des données de progression",
+    "empty": "Aucune donnée de progression disponible"
+  },
+  "actions": {
+    "editProfile": "Modifier le Profil",
+    "shareProgress": "Partager la Progression",
+    "exportData": "Exporter les Données",
+    "resetStats": "Réinitialiser les Statistiques",
+    "viewDetails": "Voir les Détails"
+  },
+  "confirmations": {
+    "resetStats": {
+      "title": "Réinitialiser les Statistiques",
+      "message": "Êtes-vous sûr de vouloir réinitialiser vos statistiques ? Cette action est irréversible.",
+      "confirm": "Oui, Réinitialiser",
+      "cancel": "Annuler"
+    }
+  },
+  "notifications": {
+    "statsReset": "Les statistiques ont été réinitialisées avec succès",
+    "exportSuccess": "Données exportées avec succès",
+    "shareCopied": "Lien de partage copié dans le presse-papiers"
+  }
+}
