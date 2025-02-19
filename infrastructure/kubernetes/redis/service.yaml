@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster
+  namespace: word-generator
+  labels:
+    app: word-generator
+    component: cache
+    technology: redis
+    tier: data
+    environment: production
+  annotations:
+    # Enable service discovery for unready endpoints during cluster formation
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+    # Prometheus monitoring configuration
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9121"
+    # AWS load balancer configurations
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: "60"
+spec:
+  # Headless service for StatefulSet DNS resolution
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    # Main Redis port
+    - port: 6379
+      targetPort: 6379
+      name: redis
+      protocol: TCP
+    # Redis cluster bus port
+    - port: 16379
+      targetPort: 16379
+      name: cluster
+      protocol: TCP
+    # Prometheus metrics port
+    - port: 9121
+      targetPort: 9121
+      name: metrics
+      protocol: TCP
+  # Pod selector matching Redis StatefulSet labels
+  selector:
+    app: word-generator
+    component: cache
+    technology: redis
+  # Required for Redis cluster formation
+  publishNotReadyAddresses: true
+  # Enable client session affinity
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800  # 3 hours
