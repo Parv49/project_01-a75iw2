@@ -1,0 +1,74 @@
+{
+  "profile": {
+    "title": "Profile",
+    "header": {
+      "welcome": "Welcome, {{username}}",
+      "lastLogin": "Last login: {{date}}"
+    },
+    "statistics": {
+      "title": "Statistics",
+      "totalGames": "Total Games",
+      "averageScore": "Average Score", 
+      "totalWordsFound": "Total Words Found",
+      "successRate": "Success Rate",
+      "averageTimePerGame": "Average Time per Game",
+      "bestScore": "Best Score",
+      "gamesWon": "Games Won",
+      "winRate": "Win Rate",
+      "loading": "Loading statistics...",
+      "error": "Failed to load statistics"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "locked": "Locked",
+      "unlocked": "Unlocked on {{date}}",
+      "progress": "Progress: {{current}}/{{total}}",
+      "empty": "No achievements yet",
+      "loading": "Loading achievements...",
+      "error": "Failed to load achievements",
+      "categories": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate", 
+        "advanced": "Advanced",
+        "expert": "Expert"
+      }
+    },
+    "progress": {
+      "title": "Learning Progress",
+      "chart": {
+        "title": "Progress Over Time",
+        "xAxis": "Time Period",
+        "yAxis": "Words Learned",
+        "tooltip": "{{count}} words on {{date}}"
+      },
+      "levels": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+      },
+      "loading": "Loading progress data...",
+      "error": "Failed to load progress data",
+      "empty": "No progress data available"
+    },
+    "actions": {
+      "editProfile": "Edit Profile",
+      "shareProgress": "Share Progress",
+      "exportData": "Export Data", 
+      "resetStats": "Reset Statistics",
+      "viewDetails": "View Details"
+    },
+    "confirmations": {
+      "resetStats": {
+        "title": "Reset Statistics",
+        "message": "Are you sure you want to reset your statistics? This action cannot be undone.",
+        "confirm": "Yes, Reset",
+        "cancel": "Cancel"
+      }
+    },
+    "notifications": {
+      "statsReset": "Statistics have been reset successfully",
+      "exportSuccess": "Data exported successfully",
+      "shareCopied": "Share link copied to clipboard"
+    }
+  }
+}
